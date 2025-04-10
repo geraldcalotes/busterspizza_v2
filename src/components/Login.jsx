@@ -65,7 +65,7 @@ function Login() {
           <img src={logo} alt="Company Logo" className="login-logo" />
         </div>
         <div className="form-group store-selector">
-          <label htmlFor="store">Store Branch</label>
+          <label htmlFor="store" style={{ color: 'white' }}>Store Branch</label>
           <select
             id="store"
             value={selectedStore}
@@ -87,7 +87,7 @@ function Login() {
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username" style={{ color: 'white' }}>Username</label>
             <input
               type="text"
               id="username"
@@ -97,7 +97,7 @@ function Login() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" style={{ color: 'white' }}>Password</label>
             <input
               type="password"
               id="password"

@@ -39,7 +39,8 @@ function Employee() {
       setLoading(true);
       setError(null);
       
-      const response = await axios.get(API_ENDPOINTS.EMPLOYEES);
+      // const response = await axios.get(API_ENDPOINTS.EMPLOYEES);
+      const response = await axios.get(API_ENDPOINTS.USERS);
       
       if (response.data.success) {
         setEmployees(response.data.data);
@@ -401,7 +402,7 @@ function Employee() {
                             className="form-control"
                             id="username"
                             name="username"
-                            value={newUser.username}
+                            value={newEmployee.username}
                             onChange={handleInputChange}
                             required
                           />
@@ -413,7 +414,7 @@ function Employee() {
                             className="form-control"
                             id="password"
                             name="password"
-                            value={newUser.password}
+                            value={newEmployee.password}
                             onChange={handleInputChange}
                             required
                           />
@@ -427,7 +428,7 @@ function Employee() {
                             className="form-control"
                             id="firstname"
                             name="firstname"
-                            value={newUser.firstname}
+                            value={newEmployee.firstname}
                             onChange={handleInputChange}
                             required
                           />
@@ -439,7 +440,7 @@ function Employee() {
                             className="form-control"
                             id="lastname"
                             name="lastname"
-                            value={newUser.lastname}
+                            value={newEmployee.lastname}
                             onChange={handleInputChange}
                             required
                           />
@@ -453,7 +454,7 @@ function Employee() {
                             className="form-control"
                             id="phone"
                             name="phone"
-                            value={newUser.phone}
+                            value={newEmployee.phone}
                             onChange={handleInputChange}
                             placeholder="000-000-0000"
                             pattern="\d{3}-\d{3}-\d{4}"
@@ -468,7 +469,7 @@ function Employee() {
                             className="form-control"
                             id="email"
                             name="email"
-                            value={newUser.email}
+                            value={newEmployee.email}
                             onChange={handleInputChange}
                             required
                           />
@@ -481,7 +482,7 @@ function Employee() {
                             className="form-select"
                             id="access_level"
                             name="access_level"
-                            value={newUser.access_level}
+                            value={newEmployee.access_level}
                             onChange={handleInputChange}
                             required
                           >
@@ -520,13 +521,13 @@ function Employee() {
                 </div>
               )}
               
-              {!loading && !error && users.length === 0 && (
+              {!loading && !error && employees.length === 0 && (
                 <div className="alert alert-info" role="alert">
                   No users found.
                 </div>
               )}
               
-              {!loading && !error && users.length > 0 && (
+              {!loading && !error && employees.length > 0 && (
                 <div className="table-responsive">
                   <table className="table table-striped table-hover">
                     <thead className="table-dark">
@@ -542,7 +543,7 @@ function Employee() {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map((user) => {
+                      {employees.map((user) => {
                         const userId = user.id || user._id || user.user_id;
                         const isEditing = editingId === userId;
                         
