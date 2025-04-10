@@ -64,70 +64,69 @@ function Sidebar() {
                 indicesToShow=[0,3,5];
                 break;
             case 5000:
-                indicesToShow=[0,4,5];
-                break;
-        }
+                indicesToShow=[0,5,5];
+                break;       }
         break;
     case '/employees':
         switch(access_level){
           case 1000:
-              indicesToShow=[0,1,2,3,4];
+              indicesToShow=[0,1,2,3,4,5];
               break;
           case 2000:
-              indicesToShow=[0,3,4];
+              indicesToShow=[0,4,5];
               break;
             case 3000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,4,5];
                 break;
           case 5000:
-              indicesToShow=[0,3,4];
+              indicesToShow=[0,4,5];
               break;
       }
         break;
     case '/stores':
         switch(access_level){
             case 1000:
-                indicesToShow=[0,1,2,3,4];
+                indicesToShow=[0,1,2,3,4,5];
                 break;
             case 2000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,4,5];
                 break;
             case 3000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,4,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,5];
                 break;
         }
     case '/daily-sales':
         switch(access_level){
             case 1000:
-                indicesToShow=[0,1,2,3,4];
+                indicesToShow=[0,1,2,3,4,5];
                 break;
             case 2000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,5];
                 break;
             case 3000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,5];
                 break;
         }
         break;
     case '/settings':
         switch(access_level){
             case 1000:
-                indicesToShow=[0,1,2,3,4];
+                indicesToShow=[0,1,2,3,4,5];
                 break;
             case 2000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,5];
                 break;
             case 3000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,4,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,4];
+                indicesToShow=[0,3,4,5];
                 break;
         }
   }
