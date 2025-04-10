@@ -34,4 +34,4 @@ jobs:
               -o StrictHostKeyChecking=no \
               -r dist/* \
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH}}/
-
+          working-directory: ./
