@@ -8,7 +8,8 @@ const API_ENDPOINTS = {
   USERS: `${API_BASE_URL}${import.meta.env.VITE_API_USERS || '/api/users'}`,
   DAILY_MAIN: `${API_BASE_URL}${import.meta.env.VITE_API_DAILY_MAIN || '/api/daily-main'}`,
   STORE_BRANCHES: `${API_BASE_URL}${import.meta.env.VITE_API_STORE_BRANCHES || '/api/store-branches'}`,
-  WEEKLY_SALES_REPORT: `${API_BASE_URL}${import.meta.env.VITE_API_WEEKLY_SALES_REPORT || '/api/weekly-sales-report'}`
+  WEEKLY_SALES_REPORT: `${API_BASE_URL}${import.meta.env.VITE_API_WEEKLY_SALES_REPORT || '/api/weekly-sales-report'}`,
+  DRIVER_REPORTS: `${API_BASE_URL}${import.meta.env.VITE_API_DRIVER_REPORTS || '/api/driver-reports'}`
 };
 
 // Application Settings

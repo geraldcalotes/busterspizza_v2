@@ -64,7 +64,7 @@ function Sidebar() {
                 indicesToShow=[0,3,5];
                 break;
             case 5000:
-                indicesToShow=[0,5,5];
+                indicesToShow=[0,4,5];
                 break;       }
         break;
     case '/employees':
@@ -95,7 +95,7 @@ function Sidebar() {
                 indicesToShow=[0,4,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,5];
+                indicesToShow=[0,4,5];
                 break;
         }
     case '/daily-sales':
@@ -110,7 +110,7 @@ function Sidebar() {
                 indicesToShow=[0,3,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,5];
+                indicesToShow=[0,4,5];
                 break;
         }
         break;
@@ -123,12 +123,29 @@ function Sidebar() {
                 indicesToShow=[0,3,5];
                 break;
             case 3000:
-                indicesToShow=[0,3,4,5];
+                indicesToShow=[0,3,5];
                 break;
             case 5000:
-                indicesToShow=[0,3,4,5];
+                indicesToShow=[0,4,5];
                 break;
         }
+        break;
+    case '/deliveries':
+        switch(access_level){
+            case 1000:
+                indicesToShow=[0,1,2,3,4,5];
+                break;
+            case 2000:
+                indicesToShow=[0,4,5];
+                break;
+            case 3000:
+                indicesToShow=[0,4,5];
+                break;
+            case 5000:
+                indicesToShow=[0,4,5];
+                break;
+        }
+        break;    
   }
 
   return (
