@@ -7,7 +7,7 @@ import Contact from './components/Contact';
 import Sidebar from './components/Sidebar';
 import Employees from './components/Employee';
 import Stores from './components/Store';
-import DailySales from './components/Dailysales';
+import DailySales from './components/DailySales';
 import Deliveries from './components/Deliveries';
 import Settings from './components/Settings';
 import './App.css';
