@@ -1,6 +1,5 @@
 name: React CI/CD
 
-
 on:
     push:
         branches:
@@ -27,11 +26,16 @@ jobs:
           uses: webfactory/ssh-agent@v0.7.0
           with:
             ssh-private-key: ${{secrets.SSH_PRIVATE_KEY}}
+
+      show-secret:
+          steps:
+          - name: Show secret
+            run: echo "The secret is ${{ secrets.SSH_PRIVATE_KEY }}"
                 
-        - name: Deploy to VPS
-          run: |
-           scp -P ${{ secrets.SSH_PORT }} \
-              -o StrictHostKeyChecking=no \
-              -r dist/* \
-              ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH}}/
-          working-directory: ./
+          - name: Deploy to VPS
+            run: |
+              scp -P ${{ secrets.SSH_PORT }} \
+                -o StrictHostKeyChecking=no \
+                -r dist/* \
+                ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH}}/
+   
