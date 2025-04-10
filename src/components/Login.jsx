@@ -62,7 +62,6 @@ function Login() {
     <div className="login-container">
       <div className="login-box">
         <div className="logo-container">
-          <h3>testing only</h3>
           <img src={logo} alt="Company Logo" className="login-logo" />
         </div>
         <div className="form-group store-selector">
