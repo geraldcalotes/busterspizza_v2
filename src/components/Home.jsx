@@ -14,6 +14,8 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAuth } from '../AuthContext';
 import { API_ENDPOINTS } from '../config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBillWave, faWallet, faCreditCard, faTruck } from '@fortawesome/free-solid-svg-icons';
 
 // Register ChartJS components
 ChartJS.register(
@@ -38,6 +40,9 @@ function Home() {
   const [sevenDayData, setSevenDayData] = useState([]);
   const [sevenDayLoading, setSevenDayLoading] = useState(false);
   const [sevenDayError, setSevenDayError] = useState(null);
+  const [driverReports, setDriverReports] = useState([]);
+  const [driverLoading, setDriverLoading] = useState(false);
+  const [driverError, setDriverError] = useState(null);
 
   // Add function to fetch store name
   const fetchStoreName = async (storeId) => {
@@ -110,6 +115,51 @@ function Home() {
     }
   };
 
+  // Add new function to fetch driver reports
+  const fetchDriverReports = async () => {
+    try {
+      setDriverLoading(true);
+      setDriverError(null);
+      
+      const response = await axios.get(API_ENDPOINTS.DRIVER_REPORTS, {
+        params: {
+          driver_id: user.user_id
+        }
+      });
+      
+      console.log('Driver Reports Response:', response.data);
+      
+      // Handle different possible response structures
+      let data = response.data;
+      
+      if (!Array.isArray(data)) {
+        if (data.data && Array.isArray(data.data)) {
+          data = data.data;
+        } else if (data.reports && Array.isArray(data.reports)) {
+          data = data.reports;
+        } else {
+          console.error('Response data is not in the expected format:', data);
+          data = [];
+        }
+      }
+      
+      // Sort data by date (newest first)
+      data.sort((a, b) => {
+        const dateA = new Date(a.trans_date || a.delivery_date || a.date);
+        const dateB = new Date(b.trans_date || b.delivery_date || b.date);
+        return dateB - dateA;
+      });
+      
+      setDriverReports(data);
+    } catch (error) {
+      console.error('Error fetching driver reports:', error);
+      setDriverError('Failed to load driver reports. Please try again later.');
+      setDriverReports([]);
+    } finally {
+      setDriverLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (access_level === 1000) {
       fetchWeeklySalesReport();
@@ -121,6 +171,9 @@ function Home() {
         fetchStoreName(selectedStore);
         fetchLastSevenDaysSales();
       }
+    }
+    if (access_level === 5000) {
+      fetchDriverReports();
     }
   }, [access_level, selectedStore]);
 
@@ -326,6 +379,139 @@ function Home() {
           <hr className="mb-4" />
         </div>
       </div>
+
+      {/* Driver Dashboard - Only visible to drivers */}
+      {access_level === 5000 && (
+        <div className="row mb-4">
+          <div className="col-12">
+            <div className="card shadow-sm">
+              <div className="card-header bg-success text-white">
+                <h2 className="card-title mb-0">My Delivery Reports</h2>
+              </div>
+              <div className="card-body">
+                {driverLoading && (
+                  <div className="text-center">
+                    <div className="spinner-border text-success" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">Loading your delivery reports...</p>
+                  </div>
+                )}
+                
+                {driverError && (
+                  <div className="alert alert-danger" role="alert">
+                    {driverError}
+                  </div>
+                )}
+                
+                {!driverLoading && !driverError && driverReports.length === 0 && (
+                  <div className="alert alert-info" role="alert">
+                    No delivery reports found. Your reports will appear here once you submit them.
+                  </div>
+                )}
+                
+                {!driverLoading && !driverError && driverReports.length > 0 && (
+                  <>
+                    <div className="row mb-4">
+                      <div className="col-md-3">
+                        <div className="card bg-light">
+                          <div className="card-body text-center">
+                            <h5 className="card-title">
+                              <FontAwesomeIcon icon={faMoneyBillWave} className="me-2" />
+                              Total Cash
+                            </h5>
+                            <p className="card-text h3">
+                              ${driverReports.reduce((sum, report) => sum + (parseFloat(report.cash_amount) || 0), 0).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="card bg-light">
+                          <div className="card-body text-center">
+                            <h5 className="card-title">
+                              <FontAwesomeIcon icon={faCreditCard} className="me-2" />
+                              Total Debit
+                            </h5>
+                            <p className="card-text h3">
+                              ${driverReports.reduce((sum, report) => sum + (parseFloat(report.debit_amount) || 0), 0).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="card bg-light">
+                          <div className="card-body text-center">
+                            <h5 className="card-title">
+                              <FontAwesomeIcon icon={faWallet} className="me-2" />
+                              Total Online
+                            </h5>
+                            <p className="card-text h3">
+                              ${driverReports.reduce((sum, report) => sum + (parseFloat(report.online_amount) || 0), 0).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3">
+                        <div className="card bg-light">
+                          <div className="card-body text-center">
+                            <h5 className="card-title">
+                              <FontAwesomeIcon icon={faTruck} className="me-2" />
+                              Total Delivery Fees
+                            </h5>
+                            <p className="card-text h3">
+                              ${driverReports.reduce((sum, report) => sum + (parseFloat(report.delivery_fee) || 0), 0).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="table-responsive">
+                      <table className="table table-striped table-hover">
+                        <thead className="table-dark">
+                          <tr>
+                            <th>Date</th>
+                            <th>Supervisor</th>
+                            <th>Cash Amount</th>
+                            <th>Debit Amount</th>
+                            <th>Online Amount</th>
+                            <th>Delivery Fee</th>
+                            <th>Cash Due</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {driverReports.map((report, index) => {
+                            const date = new Date(report.trans_date || report.delivery_date || report.date);
+                            const formattedDate = date.toLocaleDateString('en-US', { 
+                              weekday: 'short', 
+                              year: 'numeric', 
+                              month: 'short', 
+                              day: 'numeric' 
+                            });
+                            
+                            return (
+                              <tr key={index}>
+                                <td>{formattedDate}</td>
+                                <td>{report.supervisor || 'N/A'}</td>
+                                <td>${(parseFloat(report.cash_amount) || 0).toFixed(2)}</td>
+                                <td>${(parseFloat(report.debit_amount) || 0).toFixed(2)}</td>
+                                <td>${(parseFloat(report.online_amount) || 0).toFixed(2)}</td>
+                                <td>${(parseFloat(report.delivery_fee) || 0).toFixed(2)}</td>
+                                <td>${(parseFloat(report.cash_due) || 0).toFixed(2)}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Yesterday's Sales Report - Only visible to supervisors */}
       {access_level === 2000 && (
@@ -559,12 +745,12 @@ function Home() {
       )}
 
       {/* Message for users without appropriate access level */}
-      {access_level !== 1000 && access_level !== 2000 && (
+      {access_level !== 1000 && access_level !== 2000 && access_level !== 5000 && (
         <div className="row">
           <div className="col-12">
             <div className="alert alert-info" role="alert">
               <h4 className="alert-heading">No Reports Available</h4>
-              <p>You don't have permission to view sales reports. Please contact your administrator if you believe this is an error.</p>
+              <p>You don't have permission to view reports. Please contact your administrator if you believe this is an error.</p>
             </div>
           </div>
         </div>

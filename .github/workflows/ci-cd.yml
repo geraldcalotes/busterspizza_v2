@@ -1,0 +1,37 @@
+name: React CI/CD
+
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build React App
+          run: npm run build
+ 
+        - name: Add SSH Private Key
+          uses: webfactory/ssh-agent@v0.7.0
+          with:
+            ssh-private-key: ${{secrets.SSH_PRIVATE_KEY}}
+                
+        - name: Deploy to VPS
+          run: |
+           scp -P ${{ secrets.SSH_PORT }} \
+              -o StrictHostKeyChecking=no \
+              -r dist/* \
+              ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH}}/
+
